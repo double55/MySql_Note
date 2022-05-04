@@ -1,0 +1,117 @@
+-- 12.1 并集运算
+-- 返回 28 条记录
+SELECT d.department_id
+  FROM departments d
+ UNION 
+SELECT e.department_id
+  FROM employees e;
+
+-- 返回 134 条记录，包含重复值
+SELECT d.department_id
+  FROM departments d
+ UNION ALL
+SELECT e.department_id
+  FROM employees e;
+
+-- 如果要对集合运算后的数据进行排序，需要将 ORDER BY 子句写在最后；
+-- 集合操作符（UNION、INTERSECT、 EXCEPT）之前的查询中不能包含排序操作。
+SELECT d.department_id
+  FROM departments d
+ ORDER BY d.department_id
+ UNION 
+SELECT e.department_id
+  FROM employees e;
+
+-- 正确写法
+SELECT d.department_id
+  FROM departments d
+ UNION ALL
+SELECT e.department_id
+  FROM employees e
+ ORDER BY department_id;
+
+-- 12.2 交集运算
+-- 使用 INTERSECT 获取所有经理的员工编号，排除了重复出现的值。
+-- Except for MySQL
+SELECT m.employee_id
+  FROM employees m
+INTERSECT
+SELECT e.manager_id
+  FROM employees e
+ ORDER BY employee_id;
+
+-- 可以通过 JOIN 实现同样的效果。
+SELECT DISTINCT
+       m.employee_id
+  FROM employees m
+  JOIN employees e
+    ON (m.employee_id = e.manager_id)
+ ORDER BY employee_id;
+
+-- 12.3 差集运算
+-- 使用 EXCEPT 获取那些目前没有员工的部门，排除了重复出现的值。
+-- Except for MySQL
+SELECT d.department_id
+  FROM departments d
+EXCEPT -- 对于 Oracle， 使用 MINUS
+SELECT e.department_id
+  FROM employees e
+ ORDER BY department_id;
+
+-- 可以通过 LEFT JOIN 实现同样的效果。
+SELECT d.department_id
+  FROM departments d
+  LEFT JOIN employees e
+    ON (e.department_id = d.department_id)
+ WHERE e.department_id IS NULL
+ ORDER BY department_id;
+
+-- 12.4 集合操作优先级
+-- 返回 1 条记录
+SELECT 1 FROM employees
+UNION ALL
+SELECT 1 FROM employees
+UNION 
+SELECT 1 FROM employees;
+
+-- 返回 108 条重复记录
+SELECT 1 FROM employees
+UNION
+SELECT 1 FROM employees
+UNION ALL
+SELECT 1 FROM employees;
+
+-- Oracle 和 SQLite 返回 1 条记录
+-- PostgreSQL、SQL Server 和 Db2 返回 108 条重复记录
+-- Except for MySQL
+SELECT 1 FROM employees
+UNION ALL
+SELECT 1 FROM employees
+INTERSECT 
+SELECT 1 FROM employees;
+
+-- 返回 108 条重复记录
+-- Except for MySQL
+SELECT 1 FROM employees
+INTERSECT
+SELECT 1 FROM employees
+UNION ALL
+SELECT 1 FROM employees;
+
+-- 使用括号来修改多个集合操作符的执行顺序。
+-- Except for MySQL and SQLite
+(
+SELECT 1 FROM employees
+UNION ALL
+SELECT 1 FROM employees
+)
+INTERSECT 
+SELECT 1 FROM employees;
+
+-- SQLite
+SELECT *
+  FROM (SELECT 1 FROM employees
+         UNION ALL
+        SELECT 1 FROM employees)
+INTERSECT 
+SELECT 1 FROM employees;

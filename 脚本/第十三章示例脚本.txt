@@ -1,0 +1,79 @@
+-- 13.2 创建视图
+-- 基于 employees 表创建名为 stock_clerks 的视图。
+CREATE VIEW stock_clerks
+    AS
+SELECT first_name, last_name, email, phone_number, hire_date, salary
+  FROM employees
+ WHERE job_id = 'ST_CLERK';
+
+-- 使用了函数、分组以及分组过滤创建名为 emp_max_salary 的视图。
+CREATE VIEW emp_max_salary
+    AS
+SELECT last_name, COUNT(1) AS num_of_name, MAX(salary) AS max_sal
+  FROM employees
+ GROUP BY last_name
+HAVING COUNT(1) > 1;
+
+-- 基于 employees、departments 以及 jobs 的多表连接创建名为 emp_info 的视图。
+CREATE VIEW emp_info
+    AS
+SELECT d.department_name, j.job_title, e.first_name, e.last_name, e.email
+  FROM employees e
+  LEFT JOIN departments d ON (d.department_id = e.department_id)
+  JOIN jobs j ON (j.job_id = e.job_id);
+
+-- 在 SQL 标准中，要求视图定义不能包含 ORDER BY 子句，
+-- 因为视图自身并不存储数据；但许多数据库并不遵循该规则。
+-- Oracle, MySQL, PostgreSQL and SQLite
+CREATE VIEW emp_info2
+    AS
+SELECT d.department_name,j.job_title, e.first_name, e.last_name, e.email
+  FROM employees e
+  LEFT JOIN departments d ON (d.department_id = e.department_id)
+  JOIN jobs j ON (j.job_id = e.job_id)
+ ORDER BY d.department_name;
+
+-- 对于查询语句，视图可以像普通表一样作为数据源使用。
+SELECT hire_date,
+       MAX(salary) AS max_salary
+  FROM stock_clerks
+ WHERE salary >= 2500
+ GROUP BY hire_date
+ ORDER BY max_salary DESC;
+
+-- 13.3 修改视图
+-- 创建名为 stock_clerks 的视图；如果它已经存在，替换原来的视图。
+-- Oracle, MySQL, PostgreSQL and Db2
+CREATE OR REPLACE VIEW stock_clerks
+    AS
+SELECT employee_id, first_name, last_name, email, hire_date
+  FROM employees
+ WHERE job_id = 'ST_CLERK';
+
+-- 创建名为 stock_clerks 的视图；如果它已经存在，替换原来的视图。
+-- SQL Server only
+CREATE OR ALTER VIEW stock_clerks
+    AS
+SELECT employee_id, first_name, last_name, email, hire_date
+  FROM employees
+ WHERE job_id = 'ST_CLERK';
+
+-- 一些数据库还提供了单独的 ALTER 命令，用于修改视图。
+-- MySQL and SQL Server
+ALTER VIEW stock_clerks
+    AS
+SELECT employee_id, first_name, last_name, email, hire_date
+  FROM employees
+ WHERE job_id = 'ST_CLERK';
+
+-- 13.4 删除视图
+DROP VIEW stock_clerks;
+
+-- 视图不存在时不会出错
+-- MySQL, SQL Server, PostgreSQL and SQLite 
+DROP VIEW IF EXISTS stock_clerks;
+
+-- 同时删除多个视图
+-- MySQL, SQL Server and PostgreSQL
+DROP VIEW IF EXISTS 
+emp_max_salary, emp_info, emp_info2;

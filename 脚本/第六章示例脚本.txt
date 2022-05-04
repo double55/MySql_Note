@@ -1,0 +1,73 @@
+-- 6.1 Top-N 查询
+-- Oracle, SQL Server,
+-- PostgreSQL and Db2
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC
+[OFFSET 0 ROWS]
+ FETCH FIRST 10 ROWS ONLY;
+
+-- MySQL, PostgreSQL,
+-- Db2 and SQLite
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC
+ LIMIT 10;
+
+-- 6.2 分页查询
+-- Oracle, SQL Server,
+-- PostgreSQL and Db2
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC
+OFFSET 20 ROWS
+ FETCH FIRST 10 ROWS ONLY;
+
+-- MySQL, PostgreSQL,
+-- Db2 and SQLite
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC
+ LIMIT 10 OFFSET 20;
+
+-- 6.3 数据库差异
+-- Oracle 12c
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC
+ FETCH FIRST 10 PERCENT ROWS ONLY;
+
+-- Oracle 12c
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC
+ FETCH FIRST 10 PERCENT ROWS WITH TIES;
+
+-- Oracle
+SELECT *
+  FROM (SELECT first_name,
+               last_name,
+               salary
+          FROM employees
+         ORDER BY salary DESC)
+ WHERE ROWNUM <= 10;
+
+-- SQL Server
+SELECT TOP(10)
+       first_name,
+       last_name,
+       salary
+  FROM employees
+ ORDER BY salary DESC;

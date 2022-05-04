@@ -1,0 +1,56 @@
+-- 5.1 基于单列排序
+-- 按照日期排序
+SELECT first_name,
+       last_name,
+       hire_date
+  FROM employees
+ WHERE department_id = 50
+ ORDER BY hire_date DESC;
+
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE department_id = 50
+ ORDER BY salary;
+
+-- 字符大小写排序
+CREATE TABLE t1(name VARCHAR(10));
+INSERT INTO t1(name) VALUES ('CAT');
+INSERT INTO t1(name) VALUES ('cat');
+INSERT INTO t1(name) VALUES ('boy');
+
+SELECT name
+  FROM t1
+ ORDER BY name;
+
+DROP TABLE t1;
+
+-- 5.2 基于多列排序
+SELECT first_name,
+       last_name,
+       hire_date
+  FROM employees
+ ORDER BY first_name, last_name DESC;
+
+SELECT first_name,
+       last_name,
+       hire_date
+  FROM employees
+ ORDER BY 1, 2 DESC;
+
+-- 5.3 NULL 值排序
+-- Oracle, PostgreSQL and Db2
+SELECT first_name,
+       last_name,
+       commission_pct
+  FROM employees
+ ORDER BY commission_pct NULLS LAST;
+
+-- 所有数据库
+SELECT first_name,
+       last_name,
+       commission_pct
+  FROM employees
+ ORDER BY commission_pct;
+

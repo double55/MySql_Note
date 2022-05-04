@@ -1,0 +1,94 @@
+-- 8.1 使用表别名
+SELECT e.department_id,
+       e.first_name,
+       last_name
+  FROM employees AS e;
+
+-- 8.2 连接语法
+-- ANSI SQL/86 标准，使用 FROM 和 WHERE 关键字指定表的连接条件。
+SELECT d.department_id, 
+       e.department_id,
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM employees e,
+       departments d
+ WHERE e.department_id = d.department_id;
+
+-- ANSI SQL/92 标准，使用 JOIN 和 ON 关键字指定表的连接条件。
+SELECT d.department_id, 
+       e.department_id,
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM employees e
+  JOIN departments d
+    ON e.department_id = d.department_id;
+
+-- 8.3 连接类型-1
+-- ANSI SQL/92 标准左外连接
+SELECT d.department_id, 
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM departments d
+  LEFT JOIN employees e
+    ON e.department_id = d.department_id
+ WHERE d.department_id IN (110, 120, 130);
+
+-- ANSI SQL/86 标准左外连接
+SELECT d.department_id, 
+       e.department_id,
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM departments d,
+       employees e
+ WHERE d.department_id = e.department_id(+)
+   AND d.department_id IN (110, 120, 130);
+
+-- 全外连接
+SELECT d.department_id, 
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM departments d
+  FULL JOIN employees e
+    ON e.department_id = d.department_id
+ WHERE e.last_name = 'Grant'
+    OR d.department_id IN (110, 120, 130);
+
+-- 8.4 连接类型-2
+-- 交叉连接
+SELECT d.department_id, 
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM departments d
+ CROSS JOIN employees e;
+
+SELECT d.department_id, 
+       e.department_id,
+       d.department_name,
+       e.first_name,
+       e.last_name
+  FROM departments d,
+       employees e;
+
+-- 自连接
+SELECT e.first_name AS employee_first_name,
+       e.last_name AS employee_last_name,
+       m.first_name AS manager_first_name,
+       m.last_name AS manager_last_name
+  FROM employees m
+  JOIN employees e
+    ON m.employee_id = e.manager_id;
+
+-- 多表连接
+SELECT d.department_name,
+       e.first_name,
+       e.last_name,
+       j.job_title
+  FROM departments d
+  JOIN employees e ON d.department_id = e.department_id
+  JOIN jobs j ON j.job_id = e.job_id;

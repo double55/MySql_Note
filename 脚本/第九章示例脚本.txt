@@ -1,0 +1,146 @@
+-- 9.1 数值函数
+SELECT ABS(-1),
+       EXP(1),
+       FLOOR(4.5),
+       POWER(2, 4),
+       SQRT(36)
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CEIL(1.9), -- Except for SQL Server
+       CEILING(1.9) -- Except for Oracle and SQLite
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT LOG(9, 81), -- Oracle, MySQL and PostgreSQL
+       LOG(81, 9), -- SQL Server
+       LN(2.7182818285), -- Oracle, MySQL, PostgreSQL and Db2
+       LOG(2.7182818285), -- MySQL, SQL Server, Db2 and SQLite
+       LOG10(100), -- MySQL, SQL Server, Db2 and SQLite
+       LOG(100) -- PostgreSQL
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT MOD(10, 3), -- Oracle, MySQL, PostgreSQL and Db2
+       10 % 3 -- Except for Oracle
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT GREATEST(6, 7, 8), -- Oracle, MySQL, PostgreSQL and Db2
+       LEAST(6, 7, 8), -- Oracle, MySQL, PostgreSQL and Db2
+       MAX(6, 7, 8), -- Db2 and SQLite
+       MIN(6, 7, 8) -- Db2 and SQLite
+  FROM employees
+ WHERE employee_id = 100;
+
+-- 9.2 字符函数
+SELECT ASCII('L'), -- Except for SQLite
+       UNICODE('L'), -- SQL Server and SQLite
+       CHR(76), -- Oracle, PostgreSQL and Db2
+       CHAR(76) -- MySQL, SQL Server and SQLite
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CONCAT(first_name, last_name), -- Except for SQLite
+       CONCAT_WS('-','S', 'Q', 'L'), -- MySQL, SQL Server and PostgreSQL
+       'S' || 'Q' || 'L', -- Oracle, PostgreSQL, Db2 and SQLite
+       'S' + 'Q' + 'L' -- SQL Server
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT LOWER(last_name),
+       LCASE(last_name), -- MySQL and Db2
+       UPPER(last_name),
+       UCASE(last_name) -- MySQL and Db2
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CHAR_LENGTH('数据库'), -- MySQL, PostgreSQL and Db2
+       LENGTH('数据库'), -- Oracle, PostgreSQL and SQLite
+       LEN(N'数据库'), -- SQL Server
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT OCTET_LENGTH('数据库'), -- MySQL, PostgreSQL and Db2
+       LENGTHB('数据库'), -- Oracle and Db2
+       LENGTH('数据库'), -- MySQL
+       DATALENGTH(N'数据库'), -- SQL Server
+       LENGTH(CAST('数据库' AS BLOB)) -- SQLite
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT SUBSTRING(last_name, 2, 3), -- MySQL, SQL Server, PostgreSQL and Db2
+       SUBSTR(last_name, 2, 3) -- Except for SQL Server
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT REPLACE('JACK and JUE', 'J', 'BL'),
+       REPLACE('JACK and JUE', 'J', '')
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT TRIM('-' FROM '--S-Q-L--'), -- Except for SQLite
+       TRIM('--S-Q-L--', '-'), -- PostgreSQL and SQLite
+       TRIM('  S-Q-L  '),
+       LTRIM('--S-Q-L--', '-'), -- Except for MySQL and SQL Server
+       LTRIM('  S-Q-L  ')
+  FROM employees
+ WHERE employee_id = 100;
+
+-- 9.3 日期函数
+SELECT CURRENT_DATE, -- Except for SQL Server
+       CAST(GETDATE() AS DATE) -- SQL Server
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CURRENT_TIME, -- Except for Oracle and SQL Server
+       CAST(GETDATE() AS TIME) -- SQL Server
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CURRENT_TIMESTAMP,
+       NOW() -- MySQL, PostgreSQL and Db2
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT EXTRACT(YEAR FROM hire_date), -- Except for SQL Server and SQLite
+       DATEPART(YEAR, hire_date), -- SQL Server
+       STRFTIME('%Y', hire_date), -- SQLite
+       YEAR(hire_date) -- MySQL, SQL Server and Db2
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CURRENT_DATE + INTERVAL '1' DAY, -- Oracle
+       CURRENT_DATE + INTERVAL 1 DAY, -- MySQL
+       DATEADD(DAY, 1, GETDATE()), -- SQL Server
+       CURRENT_DATE + INTERVAL '1 DAY', -- PostgreSQL
+       CURRENT_DATE + 1 DAY -- Db2
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT CURRENT_DATE - DATE '2018-01-01', -- Oracle and PostgreSQL
+       DATEDIFF(CURRENT_DATE, DATE '2018-01-01'), -- MySQL
+       DATEDIFF(DAY, '2018-01-01', GETDATE()), -- SQL Server
+       DAYS_BETWEEN(CURRENT_DATE, DATE '2018-01-01') -- Db2
+  FROM employees
+ WHERE employee_id = 100;
+
+-- 9.4 转换函数
+SELECT CAST('666' AS INTEGER), -- Except for MySQL
+       CAST('666' AS SIGNED INTEGER), -- MySQL
+       CAST(hire_date AS CHAR(10))
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT TO_CHAR(hire_date, 'YYYY-MM-DD HH24:MI:SS'), -- Oracle, 
+       TO_CHAR(hire_date, 'YYYY-MM-DD HH24:MI:SS'), -- PostgreSQL
+       TO_CHAR(hire_date, 'YYYY-MM-DD HH24:MI:SS'), -- Db2
+       CONVERT(hire_date, CHAR(20)), -- MySQL
+       CONVERT(CHAR(20), hire_date) -- SQL Server
+  FROM employees
+ WHERE employee_id = 100;
+
+SELECT '666' + 123, 
+       CONCAT('Date: ', hire_date) -- Except for SQLite
+  FROM employees
+ WHERE employee_id = 100;

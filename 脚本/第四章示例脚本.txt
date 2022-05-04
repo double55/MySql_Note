@@ -1,0 +1,103 @@
+-- 4.1 简单条件
+SELECT first_name,
+       last_name 
+  FROM employees
+ WHERE last_name = 'King';
+
+SELECT first_name,
+       last_name,
+	   department_id
+  FROM employees
+ WHERE department_id != 50;
+
+SELECT first_name,
+       last_name,
+	   employee_id
+  FROM employees
+ WHERE employee_id < 110;
+
+SELECT first_name,
+       last_name,
+	   hire_date
+  FROM employees
+ WHERE hire_date >= '2007-01-01'; -- DATE '2007-01-01' for Oracle
+
+SELECT first_name,
+       last_name,
+	   salary
+  FROM employees
+ WHERE salary BETWEEN 10000 AND 20000;
+
+SELECT first_name,
+       last_name,
+	   job_id
+  FROM employees
+ WHERE job_id IN ('AC_MGR', 'HR_REP', 'IT_PROG');
+
+-- 4.2 模式匹配
+-- 匹配以 Ja 开头的字符串
+SELECT *
+  FROM employees
+ WHERE first_name LIKE 'Ja%';
+
+-- 匹配 Bell, Bull, Bill 等字符串
+SELECT *
+  FROM employees
+ WHERE last_name LIKE 'B_ll';
+
+-- 使用符合 # 作为转义字符，_ 匹配下划线自身
+SELECT *
+  FROM jobs
+ WHERE job_id LIKE 'AD#_VP' ESCAPE '#';
+
+-- 4.3 空值判断
+SELECT first_name,
+       last_name,
+       commission_pct
+  FROM employees
+ WHERE commission_pct IS NULL;
+
+-- 4.4 复杂条件
+SELECT first_name,
+       last_name,
+       job_id,
+       salary
+  FROM employees
+ WHERE job_id = 'IT_PROG'
+   AND salary > 5000;
+
+SELECT first_name,
+       last_name,
+	   job_id,
+       salary
+  FROM employees
+ WHERE job_id = 'AD_PRES'
+    OR job_id = 'AD_VP';
+
+-- 短路运算
+SELECT first_name,
+       last_name,
+	   job_id,
+       salary
+  FROM employees
+ WHERE 1 = 0 AND 1/0 = 1;
+    -- 1 = 1 OR 1/0 = 1;
+
+-- 运算符 AND 优先级高于 OR
+SELECT first_name,
+       last_name,
+       job_id,
+       salary
+  FROM employees
+ WHERE job_id = 'IT_PROG'
+    OR job_id = 'SA_REP'
+   AND salary > 10000;
+
+SELECT first_name,
+       last_name,
+       job_id,
+       salary
+  FROM employees
+ WHERE (job_id = 'IT_PROG'
+        OR job_id = 'SA_REP')
+   AND salary > 10000;

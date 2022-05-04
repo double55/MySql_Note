@@ -1,0 +1,82 @@
+-- 15.1 创建表
+CREATE TABLE emp_demo
+    ( employee_id    INTEGER NOT NULL PRIMARY KEY
+    , last_name      CHARACTER VARYING(25) NOT NULL
+    , salary         NUMERIC(8,2) DEFAULT 1000 NOT NULL
+    , department_id  INTEGER
+    , CONSTRAINT     emp_demo_salary
+                     CHECK (salary > 0) 
+    , CONSTRAINT     emp_demo_fk
+                     FOREIGN KEY (department_id)
+                      REFERENCES departments(department_id)
+    ) ;
+
+-- Oracle, MySQL, PostgreSQL and SQLite
+CREATE TABLE emp_it -- (empno, fname, job, salary)
+    AS
+SELECT employee_id, last_name, job_id, salary
+  FROM employees
+ WHERE department_id = 60;
+
+-- Db2
+CREATE TABLE emp_it(empno, fname, job, salary)
+    AS (
+SELECT employee_id, last_name, job_id, salary
+  FROM employees
+ WHERE department_id = 60) WITH DATA;
+
+-- SQL Server and PostgreSQL
+SELECT employee_id AS empno, last_name, job_id, salary
+  INTO emp_it
+  FROM employees
+ WHERE department_id = 60;
+
+-- MySQL and Db2
+CREATE TABLE emp_demo
+  LIKE employees;
+
+-- 15.2 修改表
+ALTER TABLE emp_demo
+  ADD commission_pct NUMERIC(2,2) DEFAULT 0 NOT NULL;
+
+-- Oracle
+ALTER TABLE emp_demo MODIFY last_name varchar(30);
+-- MySQL
+ALTER TABLE emp_demo CHANGE last_name last_name varchar(30);
+-- SQL Server
+ALTER TABLE emp_demo ALTER COLUMN last_name varchar(30);
+-- PostgreSQL and Db2
+ALTER TABLE emp_demo ALTER COLUMN last_name SET DATA TYPE varchar(30);
+
+-- Oracle, MySQL, PosgtreSQL, Db2 and SQLite
+ALTER TABLE emp_demo RENAME COLUMN last_name TO family_name;
+-- SQL Server
+EXEC sp_rename 'emp_demo.last_name', 'family_name', 'COLUMN';
+
+-- Except for SQLite
+ALTER TABLE emp_demo 
+  DROP COLUMN department_id;
+
+-- 15.3 删除表
+-- Oracle
+DROP TABLE departments CASCADE CONSTRAINTS;
+
+-- MySQL and PostgreSQL
+DROP TABLE IF EXISTS departments, jobs CASCADE;
+
+-- SQL Server
+DROP TABLE IF EXISTS departments, jobs;
+
+-- SQLite
+DROP TABLE IF EXISTS departments;
+
+-- 15.4 截断表
+-- Oracle
+TRUNCATE TABLE departments CASCADE;
+
+-- PostgreSQL
+TRUNCATE TABLE departments, jobs CASCADE;
+
+-- SQLite
+DELETE FROM departments;
+

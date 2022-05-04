@@ -1,0 +1,97 @@
+-- 10.1 简单 CASE 表达式
+SELECT e.first_name,
+       e.last_name,
+       CASE e.job_id
+         WHEN 'AD_PRES' THEN 'President'
+         WHEN 'AD_VP'   THEN 'Vice President'
+         WHEN 'IT_PROG' THEN 'Programmer'
+         ELSE 'Other job'
+       END AS "Job Description"
+  FROM employees e;
+
+-- 10.2 搜索 CASE 表达式
+SELECT e.first_name,
+       e.last_name,
+       e.salary,
+       CASE
+         WHEN e.salary < 5000  THEN 'Low'
+         WHEN e.salary < 10000 THEN 'Middle'
+         WHEN e.salary < 15000 THEN 'High'
+         ELSE 'Top'
+       END AS salary_level
+  FROM employees e;
+
+SELECT CASE
+         WHEN e.salary < 5000  THEN 'Low'
+         WHEN e.salary < 10000 THEN 'Middle'
+         WHEN e.salary < 15000 THEN 'High'
+         ELSE 'Top'
+       END AS salary_level,
+       AVG(e.salary) avg_salary
+  FROM employees e
+ GROUP BY CASE
+            WHEN e.salary < 5000  THEN 'Low'
+            WHEN e.salary < 10000 THEN 'Middle'
+            WHEN e.salary < 15000 THEN 'High'
+            ELSE 'Top'
+         END;
+
+-- 10.3 缩写 CASE 表达式
+SELECT NULLIF(1, 2),
+       1 / NULLIF(0, 0)
+  FROM employees e
+ WHERE employee_id = 100;
+
+SELECT e.first_name,
+       e.last_name,
+       e.commission_pct,
+       COALESCE(e.commission_pct, 0)
+  FROM employees e;
+
+-- 10.4 专有扩展函数
+-- Oracle and Db2
+SELECT e.first_name,
+       e.last_name,
+       NVL(e.commission_pct, 0)
+  FROM employees e;
+-- Db2 only
+SELECT e.first_name,
+       e.last_name,
+       NVL(e.commission_pct, e.salary, 0)
+  FROM employees e;
+
+-- MySQL and SQLite
+SELECT e.first_name,
+       e.last_name,
+       IFNULL(e.commission_pct, 0)
+  FROM employees e;
+
+-- SQL Server only
+SELECT e.first_name,
+       e.last_name,
+       ISNULL(e.commission_pct, 0)
+  FROM employees e;
+
+-- Oracle and Db2
+SELECT e.first_name,
+       e.last_name,
+       e.commission_pct,
+       e.salary,
+       NVL2(e.commission_pct, e.salary *(1 + e.commission_pct), e.salary)
+  FROM employees e;
+
+-- For MySQL only
+SELECT e.first_name,
+       e.last_name,
+       e.commission_pct,
+       e.salary,
+       IF(e.commission_pct, e.salary *(1 + e.commission_pct), e.salary)
+  FROM employees e;
+
+-- Oracle and Db2
+SELECT e.first_name,
+       e.last_name,
+       DECODE(e.job_id, 'AD_PRES', 'President',
+                        'AD_VP', 'Administration Vice President',
+                        'Other job') AS "Job Description"
+  FROM employees e;

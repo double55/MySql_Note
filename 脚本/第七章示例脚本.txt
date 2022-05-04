@@ -1,0 +1,71 @@
+-- 7.1 聚合函数
+SELECT AVG(salary),
+       COUNT(*),
+       MIN(salary),
+       MAX(salary),
+       SUM(salary)
+  FROM employees;
+
+-- 对于聚合函数，如果在参数中使用 DISTINCT，可以在计算之前排除重复值；
+-- 聚合函数在计算时，忽略输入为 NULL 值的数据行。
+SELECT COUNT(1), 
+       COUNT(DISTINCT job), 
+       COUNT(commission_pct)
+  FROM employees;
+
+-- 7.2 数据分组
+-- 按照部门进行分组，然后返回每个部门的平均薪水
+SELECT department_id,
+       AVG(salary)
+  FROM employees
+ GROUP BY department_id;
+
+-- 按照不同部门、不同职位进行分组，计算各个组内的平均薪水
+SELECT department_id, 
+       job_id,
+       AVG(salary)
+  FROM employees
+ GROUP BY department_id, job_id;
+
+-- 错误示例：SELECT 列表中包含了既不是聚合函数，也不属于 GROUP BY 子句的字段。
+SELECT department_id, 
+       first_name,
+       AVG(salary)
+  FROM employees
+ GROUP BY department_id;
+
+-- 7.3 分组过滤
+-- 错误示例：WHERE 只能基于分组前的数据进行过滤
+SELECT department_id, 
+       AVG(salary)
+  FROM employees
+ WHERE AVG(salary) > 10000
+ GROUP BY department_id;
+
+-- HAVING 过滤平均薪水大于 10000 的部门
+SELECT department_id, 
+       AVG(salary) AS avg_sal
+  FROM employees
+ GROUP BY department_id
+HAVING AVG(salary) > 10000;
+
+-- 同时使用 WHERE 子句进行数据行的过滤，使用 HAVING 进行分组结果的过滤。
+-- 返回薪水大于 5000 的员工数量大于 5 的部门
+SELECT department_id, 
+       COUNT(*) AS headcount
+  FROM employees
+ WHERE salary > 5000
+ GROUP BY department_id
+HAVING COUNT(*) > 5;
+
+-- GROUP BY 扩展选项 ROLLUP
+-- Oracle, SQL Server, PostgreSQL and Db2
+SELECT department_id,
+       job_id,
+       COUNT(*) AS headcount
+  FROM employees
+ WHERE salary > 5000
+   AND department_id IS NOT NULL
+ GROUP BY ROLLUP (department_id, job_id)
+ -- GROUP BY department_id, job_id WITH ROLLUP -- MySQL
+ ORDER BY department_id, job_id;

@@ -1,0 +1,30 @@
+-- 3.1 最简单查询
+SELECT first_name,
+       last_name
+  FROM employees;
+
+-- 星号表示查询所有的列
+SELECT *
+  FROM employees;
+
+-- MySQL, SQL Server, PostgreSQL and SQLite
+SELECT 1 + 1;
+-- Oracle, MySQL
+SELECT 1 + 1
+  FROM dual;
+-- Db2
+SELECT 1 + 1
+  FROM sysibm.sysdummy1;
+
+-- 3.2 消除重复值
+SELECT DISTINCT job_id
+  FROM employees;
+
+SELECT DISTINCT commission_pct
+  FROM employees;
+
+-- 3.3 使用列别名
+SELECT employee_id AS "员工编号",
+       first_name AS "名",
+	   last_name "姓"
+  FROM employees;

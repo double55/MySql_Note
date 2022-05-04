@@ -1,0 +1,131 @@
+-- 11.1 子查询概述
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE salary > (
+                 SELECT AVG(salary)
+                   FROM employees
+                )
+ ORDER BY salary;
+
+-- 11.2 标量子查询
+-- SELECT 子句中的标量子查询
+SELECT first_name,
+       last_name,
+       salary,
+       salary - (SELECT ROUND(AVG(salary), 0)
+                   FROM employees) AS difference
+ FROM employees
+ORDER BY first_name , last_name;
+
+-- WHERE 子句中的标量子查询
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE salary = (SELECT MAX(salary)
+                   FROM employees)
+ ORDER BY first_name , last_name;
+
+-- 11.3 行子查询
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE (first_name, last_name) = (SELECT MAX(first_name), MAX(last_name)
+                                    FROM employees)
+ORDER BY first_name , last_name;
+
+-- 错误示例
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE first_name = (SELECT first_name
+                       FROM employees
+                      WHERE job_id = 'IT_PROG')
+ORDER BY first_name , last_name;
+
+-- 11.4 表子查询
+SELECT d.department_name,
+       ds.sum_salary
+  FROM departments d
+  JOIN (SELECT department_id,
+               SUM(salary) AS sum_salary
+          FROM employees
+         GROUP BY department_id) ds
+    ON (d.department_id = ds.department_id)
+ ORDER BY d.department_name;
+
+-- WHERE 子句中的表子查询
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE job_id IN (SELECT job_id
+                    FROM jobs
+                   WHERE max_salary <= 10000)
+ORDER BY first_name , last_name;
+
+-- WHERE 中的子查询也可以使用 ALL、ANY/SOME 运算符
+-- Except for SQLite
+SELECT first_name,
+       last_name,
+       salary
+  FROM employees
+ WHERE salary > ALL (SELECT AVG(salary)
+                       FROM employees
+                      GROUP BY department_id)
+ORDER BY first_name , last_name;
+
+-- 11.5 关联子查询
+SELECT job_id,
+       first_name,
+       last_name,
+       salary
+  FROM employees o
+ WHERE salary = (SELECT MAX(salary)
+                   FROM employees i
+                  WHERE i.job_id = o.job_id)
+ ORDER BY job_id, first_name;
+
+-- SELECT 子句中的关联子查询
+SELECT d.department_name,
+       (SELECT SUM(salary)
+          FROM employees e
+         WHERE e.department_id = d.department_id) AS sum_salary
+  FROM departments d
+ ORDER BY d.department_name;
+
+-- 错误示例，FROM 子句中不能使用关联子查询
+SELECT d.department_name,
+       t.max_salary
+  FROM departments d
+  JOIN (SELECT MAX(e.salary) AS max_salary
+          FROM employees e
+         WHERE e.department_id = d.department_id) t
+ ORDER BY d.department_name;
+
+-- EXISTS 操作符用于检查子查询结果的存在性
+SELECT d.department_name
+  FROM departments d
+ WHERE EXISTS ( SELECT 1
+                  FROM employees e
+                 WHERE e.first_name = 'David'
+                   AND e.department_id = d.department_id)
+ ORDER BY department_name;
+
+-- [NOT] EXISTS 与 [NOT] IN 的区别：前者只检查存在性，后者需要比较实际的值是否相等（=）
+SELECT d.department_name
+  FROM departments d
+ WHERE NOT EXISTS ( SELECT 1
+                      FROM employees e
+                     WHERE e.department_id = d.department_id)
+ ORDER BY department_name;
+
+SELECT d.department_name
+  FROM departments d
+ WHERE d.department_id NOT IN ( SELECT e.department_id
+                                  FROM employees e)
+ORDER BY department_name;
