@@ -1,0 +1,37 @@
+<mxfile host="65bd71144e">
+    <diagram id="SxHgE9E9dn_kpRRSrLsN" name="第 1 页">
+        <mxGraphModel dx="1095" dy="910" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" background="#ffffff" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="2" value="Actor" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeColor=#000000;fillColor=#000000;fontColor=none;noLabel=1;" vertex="1" parent="1">
+                    <mxGeometry x="80" y="200" width="60" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="3" value="" style="endArrow=classic;html=1;strokeColor=#000000;" edge="1" parent="1" source="2">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="530" y="490" as="sourcePoint"/>
+                        <mxPoint x="200" y="240" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" value="" style="shape=partialRectangle;whiteSpace=wrap;html=1;bottom=1;right=1;left=1;top=0;fillColor=none;routingCenterX=-0.5;direction=south;strokeColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="160" width="40" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="5" value="" style="shape=partialRectangle;whiteSpace=wrap;html=1;bottom=1;right=1;left=1;top=0;fillColor=none;routingCenterX=-0.5;direction=south;strokeColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="200" y="220" width="40" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="6" value="trx_id == creator_trx_id： 可以访问这个版本" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="140" width="260" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="trx_id &amp;lt; min_trx_id： 可以访问这个版本" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="200" width="260" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="trx_id &amp;gt; max_trx_id： 不可以访问这个版本" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="260" width="260" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="min_trx_id &amp;lt;= trx_id &amp;lt;= creator_trx_id： 如果trx_id在m_ids中是不可以访问这个版本的，反之可以" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#000000;" vertex="1" parent="1">
+                    <mxGeometry x="240" y="320" width="530" height="40" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
