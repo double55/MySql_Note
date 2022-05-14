@@ -22,7 +22,62 @@ mysql>  select length(NULL), length(''), length('1');
 
 通俗的讲：空值就像是一个真空态杯子，什么都没有，而NULL值就是一个装满空气的杯子，虽然看起来都是一样的，但是有着本质的区别。
 
+## 三值逻辑
 
+数据库中的 NULL 是一个特殊的值，代表了缺失的数据或者不适用的情况。
+
+SQL逻辑运算的结果存在三种情况：真、假、或者未知（Unknown）。
+
+***NULL比较***
+
+在SQL语句中，任何数据和空值进行算术比较的结果既不是真也不是假，而是未知。
+
+where条件只有确定的情况下才会返回值，若where条件判断的结果不确定，则不返回记录。
+
+## NULL分组
+
+分组操作中的多个NULL值会被看作相同的数据，包括：
+- group by子句
+- distinct子句
+- union运算符
+- 窗口函数中的partition by子句
+
+## 函数中的NULL
+
+一般来说，当表达式或者函数的参数中存在NULL时，返回的结果也是NULL。
+
+聚合函数（AVG、SUM、COUNT等）通常都会忽略输入中的NULL。
+
+## NULL处理函数
+
+为了避免NULL值可能带来的问题，我们可以利用函数将NULL转换为其他数据。SQL标准中定义了与NULL相关的函数：COALESCE和NULLIF。
+
+```mysql
+IFNULL(v1,v2)
+
+如果 v1 的值不为 NULL，则返回 v1，否则返回 v2。
+
+mysql> SELECT IFNULL(null,'Hello Word')
+Hello Word
+```
+
+```mysql
+mysql> NULLIF(expr1, expr2)
+
+比较两个字符串，如果字符串 expr1 与 expr2 相等 返回 NULL，否则返回 expr1
+
+mysql> SELECT NULLIF(25, 25);
+```
+
+```mysql
+mysql> COALESCE(expr1, expr2, ...., expr_n)
+
+返回参数中的第一个非空表达式（从左向右）
+
+mysql> SELECT COALESCE(NULL, NULL, NULL, 'runoob.com', NULL, 'google.com');
+
+runoob.com
+```
 
 ## 插入/查询方式区别
 
