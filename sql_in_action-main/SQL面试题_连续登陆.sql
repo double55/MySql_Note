@@ -1,3 +1,4 @@
+use niuke;
 CREATE TABLE t_login
 (
     uid        int,
@@ -33,6 +34,11 @@ INSERT INTO t_login
 VALUES (1, '2022-01-07 20:00:00');
 INSERT INTO t_login
 VALUES (2, '2022-01-07 21:00:00');
+
+SELECT DISTINCT uid, date(login_time) ymd
+FROM t_login
+WHERE login_time BETWEEN timestamp '2022-01-01 00:00:00'
+          AND '2022-01-31 23:59:59';
 
 -- 如何通过SQL查询找出2022年1月连续登录3天以上的用户？
 -- 自连接查询
