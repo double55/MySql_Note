@@ -34,4 +34,3 @@ flush slow log
 ## 注意
 
 ***只有sql语句执行的Query_time - Lock_time > long_query_time时，才会被记录。***
-
