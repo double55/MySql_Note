@@ -1,3 +1,5 @@
+# MySQL自增主键值回溯问题
+
 平时我们使用MySQL时，通常每一个表都会有一个自增主键ID，每新增一条数据，ID值就会自增1。但在8.0之前版本的MySQL中，这个自增值会存在一个回溯的问题。
 
 例如，在一个新表中插入三条主键为1、2、3的数据行，这时候用<font color=#555787>SHOW CREATE TABLE</font>命令查看该表的<font color=#555787>AUTO_INCREMENT</font>的值是4，这是没问题的。
