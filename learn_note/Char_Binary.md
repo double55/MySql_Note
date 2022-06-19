@@ -31,5 +31,8 @@ select lenth('我'),char_lenth('我');
 
 ![](./img/char_01.png)
 
-> 数据库版本8.0
+> latin1 / gbk字符集下
 
+![](./img/char_02.png)
+
+> utf8mb3字符集下
