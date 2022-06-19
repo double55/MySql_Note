@@ -33,6 +33,6 @@ select lenth('我'),char_lenth('我');
 
 > latin1 / gbk字符集下
 
-![](./img/char_02.png)
+![](./img/char_03.png)
 
 > utf8mb3字符集下
