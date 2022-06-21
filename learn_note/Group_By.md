@@ -10,10 +10,10 @@
 
 ```mysql
 SELECT dept_no,
-       SUBSTRING_INDEX(GROUP_CONCAT(dept_emp.emp_no ORDER BY salary DESC), ',', 1) as emp_no,
-       MAX(salary)                                                                 as maxSalary
+       SUBSTRING_INDEX(GROUP_CONCAT(dept_emp.emp_no ORDER BY salary DESC), ',', 1) AS emp_no,
+       MAX(salary)                                                                 AS maxSalary
 FROM dept_emp,
      salaries
 WHERE dept_emp.emp_no = salaries.emp_no
-GROUP BY dept_no;
+GROUP BY dept_no ASC;
 ```
